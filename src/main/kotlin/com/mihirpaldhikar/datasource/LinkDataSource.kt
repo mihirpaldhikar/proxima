@@ -22,17 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.mihirpaldhikar.models
+package com.mihirpaldhikar.datasource
 
-data class Twitter(
-    val card: String?,
-    val site: String?,
-    val siteId: String?,
-    val creator: String?,
-    val creatorId: String?,
-    val description: String?,
-    val title: String?,
-    val image: String?,
-    val imageAlt: String?,
+import com.mihirpaldhikar.models.LinkDetails
 
-    )
+interface LinkDataSource {
+    suspend fun generateLinkDetails(link: String): LinkDetails?
+}

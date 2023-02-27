@@ -25,7 +25,10 @@
 package com.mihirpaldhikar.models
 
 data class LinkDetails(
+    val title: String?,
+    val description: String?,
+    val favicon: String?,
     val link: String,
-    val openGraphTags: OpenGraph?,
-    val twitterTags: Twitter?,
+    val openGraph: OpenGraph?,
+    val twitter: Twitter?,
 )
