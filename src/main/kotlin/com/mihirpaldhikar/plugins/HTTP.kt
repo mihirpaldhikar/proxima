@@ -50,10 +50,7 @@ fun Application.configureHTTP() {
         }
     }
     install(CORS) {
-        allowMethod(HttpMethod.Options)
-        allowMethod(HttpMethod.Put)
-        allowMethod(HttpMethod.Delete)
-        allowMethod(HttpMethod.Patch)
+        allowMethod(HttpMethod.Get)
         allowHeader(HttpHeaders.Authorization)
         anyHost()
     }
