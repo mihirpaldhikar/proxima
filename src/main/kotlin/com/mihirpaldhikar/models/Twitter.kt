@@ -24,15 +24,16 @@
 
 package com.mihirpaldhikar.models
 
-data class Twitter(
-    val card: String?,
-    val site: String?,
-    val siteId: String?,
-    val creator: String?,
-    val creatorId: String?,
-    val description: String?,
-    val title: String?,
-    val image: String?,
-    val imageAlt: String?,
+import com.google.gson.annotations.Expose
 
-    )
+data class Twitter(
+    @Expose val card: String?,
+    @Expose val site: String?,
+    @Expose val siteId: String?,
+    @Expose val creator: String?,
+    @Expose val creatorId: String?,
+    @Expose val description: String?,
+    @Expose val title: String?,
+    @Expose val image: String?,
+    @Expose val imageAlt: String?,
+)

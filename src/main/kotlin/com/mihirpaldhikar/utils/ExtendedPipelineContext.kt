@@ -22,26 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.mihirpaldhikar.router
+package com.mihirpaldhikar.utils
 
-import com.mihirpaldhikar.repositories.LinkRepository
-import com.mihirpaldhikar.utils.Response
-import com.mihirpaldhikar.utils.sendResponse
-import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.routing.*
+import io.ktor.server.response.*
+import io.ktor.util.pipeline.*
 
-fun Routing.linkRouter(linkRepository: LinkRepository) {
-    route("/") {
-        get("/") {
-            val linkQuery = call.request.queryParameters["link"] ?: return@get sendResponse(
-                Response.Error(
-                    errorCode = HttpStatusCode.BadRequest,
-                    message = "Please provide link as a query."
-                )
-            )
-            val response = linkRepository.generateLinkDetails(linkQuery)
-            sendResponse(response)
+suspend fun PipelineContext<Unit, ApplicationCall>.sendResponse(response: Response) {
+    call.respond(
+        status = response.statusCode,
+        message = if (response is Response.Success) {
+            response.data
+        } else {
+            response
         }
-    }
+    )
 }

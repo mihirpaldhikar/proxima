@@ -28,11 +28,24 @@ import com.mihirpaldhikar.datasource.LinkDataSource
 import com.mihirpaldhikar.models.LinkDetails
 import com.mihirpaldhikar.models.OpenGraph
 import com.mihirpaldhikar.models.Twitter
+import com.mihirpaldhikar.utils.Response
+import io.ktor.http.*
+import org.apache.commons.validator.routines.UrlValidator
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class LinkRepository : LinkDataSource {
-    override suspend fun generateLinkDetails(link: String): LinkDetails {
+    override suspend fun generateLinkDetails(link: String): Response {
+
+        val urlValidator = UrlValidator(arrayOf("https", "http"))
+
+        if (!urlValidator.isValid(link)) {
+            return Response.Error(
+                errorCode = HttpStatusCode.BadRequest,
+                message = "Provided link is invalid."
+            )
+        }
+
         var openGraphTags = OpenGraph(
             title = null,
             type = null,
@@ -155,6 +168,9 @@ class LinkRepository : LinkDataSource {
 
         }
 
-        return linkDetails.copy(openGraph = openGraphTags, twitter = twitterTags)
+        return Response.Success(
+            successCode = HttpStatusCode.OK,
+            data = linkDetails.copy(openGraph = openGraphTags, twitter = twitterTags)
+        )
     }
 }

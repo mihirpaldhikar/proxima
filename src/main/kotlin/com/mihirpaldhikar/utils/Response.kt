@@ -22,26 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.mihirpaldhikar.router
+package com.mihirpaldhikar.utils
 
-import com.mihirpaldhikar.repositories.LinkRepository
-import com.mihirpaldhikar.utils.Response
-import com.mihirpaldhikar.utils.sendResponse
+import com.google.gson.annotations.Expose
 import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.routing.*
 
-fun Routing.linkRouter(linkRepository: LinkRepository) {
-    route("/") {
-        get("/") {
-            val linkQuery = call.request.queryParameters["link"] ?: return@get sendResponse(
-                Response.Error(
-                    errorCode = HttpStatusCode.BadRequest,
-                    message = "Please provide link as a query."
-                )
-            )
-            val response = linkRepository.generateLinkDetails(linkQuery)
-            sendResponse(response)
-        }
-    }
+sealed class Response(
+    val statusCode: HttpStatusCode,
+    val payload: Any
+) {
+    data class Error(val errorCode: HttpStatusCode, @Expose val message: String) :
+        Response(statusCode = errorCode, payload = message)
+
+    data class Success(val successCode: HttpStatusCode, @Expose val data: Any) : Response(
+        statusCode = successCode, payload = data,
+    )
 }

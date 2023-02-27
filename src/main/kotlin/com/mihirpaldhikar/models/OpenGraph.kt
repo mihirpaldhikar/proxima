@@ -24,13 +24,15 @@
 
 package com.mihirpaldhikar.models
 
+import com.google.gson.annotations.Expose
+
 data class OpenGraph(
-    val title: String?,
-    val type: String?,
-    val url: String?,
-    val image: String?,
-    val imageAlt: String?,
-    val description: String?,
-    val locale: String?,
-    val siteName: String?,
+    @Expose val title: String?,
+    @Expose val type: String?,
+    @Expose val url: String?,
+    @Expose val image: String?,
+    @Expose val imageAlt: String?,
+    @Expose val description: String?,
+    @Expose val locale: String?,
+    @Expose val siteName: String?,
 )

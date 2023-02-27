@@ -31,6 +31,9 @@ import io.ktor.server.plugins.contentnegotiation.*
 fun Application.configureSerialization() {
     install(ContentNegotiation) {
         gson {
+            excludeFieldsWithoutExposeAnnotation()
+            setPrettyPrinting()
+            disableHtmlEscaping()
         }
     }
 }

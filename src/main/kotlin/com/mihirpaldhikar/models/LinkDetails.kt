@@ -24,11 +24,13 @@
 
 package com.mihirpaldhikar.models
 
+import com.google.gson.annotations.Expose
+
 data class LinkDetails(
-    val title: String?,
-    val description: String?,
-    val favicon: String?,
-    val link: String,
-    val openGraph: OpenGraph?,
-    val twitter: Twitter?,
+    @Expose val title: String?,
+    @Expose val description: String?,
+    @Expose val favicon: String?,
+    @Expose val link: String,
+    @Expose val openGraph: OpenGraph?,
+    @Expose val twitter: Twitter?,
 )

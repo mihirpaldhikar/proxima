@@ -24,8 +24,8 @@
 
 package com.mihirpaldhikar.datasource
 
-import com.mihirpaldhikar.models.LinkDetails
+import com.mihirpaldhikar.utils.Response
 
 interface LinkDataSource {
-    suspend fun generateLinkDetails(link: String): LinkDetails?
+    suspend fun generateLinkDetails(link: String): Response
 }
