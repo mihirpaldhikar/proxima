@@ -25,6 +25,7 @@
 val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
+val koinVersion: String by project
 
 plugins {
     kotlin("jvm") version "1.8.10"
@@ -57,6 +58,10 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
+
+    // Koin
+    implementation("io.insert-koin:koin-core:$koinVersion")
+    implementation("io.insert-koin:koin-ktor:$koinVersion")
 
     // JSoup
     implementation("org.jsoup:jsoup:1.15.4")
