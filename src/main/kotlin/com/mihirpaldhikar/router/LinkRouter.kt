@@ -22,14 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.mihirpaldhikar.plugins
+package com.mihirpaldhikar.router
 
-import com.mihirpaldhikar.router.linkRouter
+import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.configureRouting() {
-    routing {
-        linkRouter()
+fun Routing.linkRouter() {
+    route("/") {
+        get("/") {
+            val linkQuery = call.request.queryParameters["link"] ?: return@get call.respond(
+                HttpStatusCode.BadRequest,
+                "Please provide link as query."
+            )
+            call.respond(linkQuery)
+        }
     }
 }
