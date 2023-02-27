@@ -24,12 +24,15 @@
 
 package com.mihirpaldhikar.plugins
 
+import com.mihirpaldhikar.repositories.LinkRepository
 import com.mihirpaldhikar.router.linkRouter
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
+import org.koin.java.KoinJavaComponent
 
 fun Application.configureRouting() {
+    val linkRepository by KoinJavaComponent.inject<LinkRepository>(LinkRepository::class.java)
     routing {
-        linkRouter()
+        linkRouter(linkRepository = linkRepository)
     }
 }

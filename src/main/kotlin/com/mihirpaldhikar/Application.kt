@@ -32,6 +32,7 @@ fun main(args: Array<String>): Unit =
 
 @Suppress("unused")
 fun Application.module() {
+    configureKoin()
     configureHTTP()
     configureSerialization()
     configureRouting()

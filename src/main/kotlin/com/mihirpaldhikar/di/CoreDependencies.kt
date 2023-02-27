@@ -22,23 +22,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.mihirpaldhikar.router
+package com.mihirpaldhikar.di
 
 import com.mihirpaldhikar.repositories.LinkRepository
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import org.koin.dsl.module
 
-fun Routing.linkRouter(linkRepository: LinkRepository) {
-    route("/") {
-        get("/") {
-            val linkQuery = call.request.queryParameters["link"] ?: return@get call.respond(
-                HttpStatusCode.BadRequest,
-                "Please provide link as query."
-            )
-            val linkDetails = linkRepository.generateLinkDetails(linkQuery)
-            call.respond(linkDetails)
+object CoreDependencies {
+    val module = module {
+        single {
+            LinkRepository()
         }
     }
 }
