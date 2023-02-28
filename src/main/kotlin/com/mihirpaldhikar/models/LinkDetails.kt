@@ -30,7 +30,10 @@ data class LinkDetails(
     @Expose val title: String?,
     @Expose val description: String?,
     @Expose val favicon: String?,
-    @Expose val link: String,
+    @Expose val domain: String,
+    @Expose val protocol: String?,
+    @Expose val path: String?,
+    @Expose val query: String?,
     @Expose val openGraph: OpenGraph?,
     @Expose val twitter: Twitter?,
 )
