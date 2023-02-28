@@ -1,0 +1,48 @@
+name: Build And Push The Proxima Production API To Server
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build-push-gcr:
+    name: Build and Push to GCP AR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      REPOSITORY_NAME: ${{ secrets.PRODUCTION_API_REPOSITORY }}
+      IMAGE_NAME: ${{ secrets.PRODUCTION_API_IMAGE_NAME }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: 'Write Server Configuration Files'
+        uses: "finnp/create-file-action@master"
+        env:
+          FILE_NAME: ${{ github.workspace }}/src/main/resources/application.yaml
+          FILE_BASE64: ${{ secrets.APPLICATION_CONFIGURATION }}
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: '${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER  }}'
+          service_account: '${{ secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT  }}'
+      - name: Build Docker Image
+        run: |
+          docker build -t $IMAGE_NAME:latest .
+      - name: Configure Docker Client
+        run: |
+          gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
+      - name: Push Docker Image To GCP AR
+        run: |
+          docker tag $IMAGE_NAME:latest asia-south1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:latest
+          docker push asia-south1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:latest
+      - id: 'deploy'
+        name: Deploy Image To Cloud Run
+        uses: 'google-github-actions/deploy-cloudrun@v0'
+        with:
+          region: '${{ secrets.PRODUCTION_API_SERVER_REGION }}'
+          service: '${{ secrets.PRODUCTION_API_SERVICE_NAME }}'
+          image: 'asia-south1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.PRODUCTION_API_REPOSITORY }}/${{ secrets.PRODUCTION_API_IMAGE_NAME }}'
